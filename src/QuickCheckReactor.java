@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 /*
@@ -26,15 +27,55 @@ public class QuickCheckReactor {
     private QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(xml_path);
     private SettingsMenu settingsMenu = new SettingsMenu();
 
+    //Register and show the program in system tray, along with its right click options
     private static void createTray(){
         //checking for support
         if(!SystemTray.isSupported()){
             System.out.println("System tray is not supported! Program will keep its execution and wait for the Quick Check result to show the Emoji Window.");
             return;
         }
+        //Get system's tray
+        SystemTray systemTray = SystemTray.getSystemTray();
+
+        //Create a new options menu
+        PopupMenu trayPopupMenu = new PopupMenu();
+
+        //Register options menu contents
+        MenuItem action = new MenuItem("Settings");
+        action.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Action Clicked");
+            }
+        });
+        trayPopupMenu.add(action);
+
+        MenuItem close = new MenuItem("Exit");
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        trayPopupMenu.add(close);
+
+        /*setting tray icon
+        //TODO: System Tray logo
+        Image image = Toolkit.getDefaultToolkit().getImage("src/img.jpg");
+        TrayIcon trayIcon = new TrayIcon(image, "WinAlign QuickCheck Reaction", trayPopupMenu);
+        trayIcon.setImageAutoSize(true);
+        try{
+            systemTray.add(trayIcon);
+        }catch(AWTException awtException){
+            awtException.printStackTrace();
+        }*/
     }
 
     public static void main(String[] args) {
         createTray();
+
+        while (true){
+
+        }
     }
 }
