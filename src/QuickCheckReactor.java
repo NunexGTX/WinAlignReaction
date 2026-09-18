@@ -71,6 +71,8 @@ public class QuickCheckReactor {
             try {
                 if(quickCheckResultWatcher.watchXML()){ //Wait for XML to change (blocks and waits)
                     emojiconDrawer.DrawQuickCheckResult(quickCheckResultWatcher.quickCheckResultVal());
+                    TimeUnit.SECONDS.sleep(configManager.getWindowTimeoutSeconds()); //Wait for window timeout and halt the loop
+                    emojiconDrawer.DestroyResultWindow(); //Destroy the emoji window and continue the loop
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
