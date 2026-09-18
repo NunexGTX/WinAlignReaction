@@ -1,3 +1,10 @@
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -6,6 +13,9 @@ public class QuickCheckResultWatcher {
     private Path result_xml_path;
 
     private WatchService XMLWatcher;
+    public static final int READ_ERROR = -1;
+    public static final int[] validTestValues = new int[]{0,1,2,3};  //Undefined, pass, warning, fail
+    public static final String MEASObject = "WHEEL_ALIGNMENT";
 
     public QuickCheckResultWatcher(Path result_xml_path){
         this.result_xml_path = result_xml_path;
@@ -38,7 +48,22 @@ public class QuickCheckResultWatcher {
     }
 
     public int quickCheckResultVal(){
-        return -1;
+        try{
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(result_xml_path.toFile());
+            String result = XPathFactory.newInstance().newXPath().evaluate("//MEAS[@OBJECT='"+MEASObject+"']/VALUE/@RESULT", doc);
+            return Integer.parseInt(result.trim());
+        }catch (IOException | SAXException e) {
+            // File missing/unreadable, or XML malformed (e.g. caught mid-write)
+            System.err.println("Could not read " + result_xml_path + ": " + e.getMessage());
+        } catch (ParserConfigurationException | XPathExpressionException e) {
+            // Setup or XPath problem, which points to a bug rather than bad data
+            System.err.println("XML processing error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            // WHEEL_ALIGNMENT missing, or RESULT empty / not a number
+            System.err.println(MEASObject + " RESULT missing or invalid: " + e.getMessage());
+        }
+
+        return READ_ERROR;
     }
 
 
