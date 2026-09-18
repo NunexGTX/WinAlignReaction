@@ -12,19 +12,12 @@ Changes on the XML file should be tracked by some kind of fast hash algorithm an
 A settings menu to adjust the configuration would be a nice addition, but not mandatory
  */
 public class QuickCheckReactor {
-    //Configuration File Path
-    private final String config_path = ""; //TODO
-
-    //Configuration Values
-    private String xml_path = null;
-    private long windowTimeoutSeconds = 5;
-    private int windowWidth = 512;
-    private int windowHeight = 512;
+    public static String AppName = "Quick Check Reactor";
 
     //Child Class Instances
-    private ConfigManager configManager = new ConfigManager(config_path);
+    private ConfigManager configManager = new ConfigManager();
     private EmojiconDrawer emojiconDrawer = new EmojiconDrawer();
-    private QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(xml_path);
+    private QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
     private SettingsMenu settingsMenu = new SettingsMenu();
 
     //Register and show the program in system tray, along with its right click options
@@ -73,6 +66,8 @@ public class QuickCheckReactor {
 
     public static void main(String[] args) {
         createTray();
+
+        System.out.println(System.getProperty("user.home"));
 
         while (true){
 
