@@ -71,10 +71,6 @@ public class ConfigManager {
             int windowWidth_load = Integer.parseInt(properties.getProperty("window_width"));
             int windowHeight_load = Integer.parseInt(properties.getProperty("window_height"));
 
-            if (!Files.isRegularFile(xml_path)) {
-                throw new NoSuchFileException(xml_path.toString());
-            }
-
             //Register the values
             xml_path = xml_path_load;
             windowTimeoutSeconds = windowTimeoutSeconds_load;
@@ -82,7 +78,8 @@ public class ConfigManager {
             windowHeight = windowHeight_load;
         }catch (IOException | NumberFormatException | InvalidPathException | NullPointerException e) {
             try {
-                Files.deleteIfExists(configFilePath);
+                System.out.println("The configuration file contains invalid values or has been corrupted. Resetting to default values...");
+                Files.move(configFilePath, configFilePath.resolveSibling(configFilePath.getFileName() + ".broken"), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException deleteEx) {
                 deleteEx.printStackTrace();
             }

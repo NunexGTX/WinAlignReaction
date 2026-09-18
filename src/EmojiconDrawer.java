@@ -1,6 +1,11 @@
 public class EmojiconDrawer {
+    private ConfigManager config;
 
-    public EmojiconDrawer(){
+    public EmojiconDrawer(ConfigManager config){
+        this.config = config;
+    }
 
+    public void DrawQuickCheckResult(int i){
+        //TODO
     }
 }

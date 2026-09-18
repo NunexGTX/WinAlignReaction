@@ -15,10 +15,10 @@ public class QuickCheckReactor {
     public static String AppName = "Quick Check Reactor";
 
     //Child Class Instances
-    private ConfigManager configManager = new ConfigManager();
-    private EmojiconDrawer emojiconDrawer = new EmojiconDrawer();
-    private QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
-    private SettingsMenu settingsMenu = new SettingsMenu();
+    private static ConfigManager configManager = new ConfigManager();
+    private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
+    private static EmojiconDrawer emojiconDrawer = new EmojiconDrawer(configManager);
+    private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
 
     //Register and show the program in system tray, along with its right click options
     private static void createTray(){
@@ -67,10 +67,14 @@ public class QuickCheckReactor {
     public static void main(String[] args) {
         createTray();
 
-        System.out.println(System.getProperty("user.home"));
-
         while (true){
-
+            try {
+                if(quickCheckResultWatcher.watchXML()){ //Wait for XML to change (blocks and waits)
+                    emojiconDrawer.DrawQuickCheckResult(quickCheckResultWatcher.quickCheckResultVal());
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
