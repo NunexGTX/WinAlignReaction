@@ -5,7 +5,7 @@ public class EmojiconDrawer {
         this.config = config;
     }
 
-    public void DrawQuickCheckResult(int i){
+    public void DrawQuickCheckResult(TestResultValue testResultValue){
         //TODO
     }
 }

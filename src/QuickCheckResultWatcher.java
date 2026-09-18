@@ -4,9 +4,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Arrays;
+
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class QuickCheckResultWatcher {
@@ -47,11 +48,17 @@ public class QuickCheckResultWatcher {
         return false;
     }
 
-    public int quickCheckResultVal(){
+    public TestResultValue quickCheckResultVal(){
         try{
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(result_xml_path.toFile());
             String result = XPathFactory.newInstance().newXPath().evaluate("//MEAS[@OBJECT='"+MEASObject+"']/VALUE/@RESULT", doc);
-            return Integer.parseInt(result.trim());
+            int testResult = Integer.parseInt(result.trim());
+
+            if (Arrays.stream(validTestValues).anyMatch(v -> v == testResult)) {
+                return TestResultValue.fromCode(testResult);
+            }else {
+                return TestResultValue.fromCode(-1);
+            }
         }catch (IOException | SAXException e) {
             // File missing/unreadable, or XML malformed (e.g. caught mid-write)
             System.err.println("Could not read " + result_xml_path + ": " + e.getMessage());
@@ -63,7 +70,7 @@ public class QuickCheckResultWatcher {
             System.err.println(MEASObject + " RESULT missing or invalid: " + e.getMessage());
         }
 
-        return READ_ERROR;
+        return TestResultValue.fromCode(-1);
     }
 
 
