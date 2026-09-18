@@ -1,13 +1,12 @@
 import java.io.IOException;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.*;
 import java.util.Properties;
 
 public class ConfigManager {
     //Configuration Values
-    private String xml_path = ""; //TODO: FIX PATH
+    private Path xml_path = Path.of(System.getProperty("user.home"), "xmldobom.xml"); //TODO: FIX PATH
     private long windowTimeoutSeconds = 5;
     private int windowWidth = 512;
     private int windowHeight = 512;
@@ -24,7 +23,11 @@ public class ConfigManager {
         configFilePath = getConfigPath(QuickCheckReactor.AppName);
 
         if(Files.exists(configFilePath)){
-            loadConfigFile();
+            try {
+                loadConfigFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }else{
             try {
                 makeConfigFile();
@@ -57,22 +60,58 @@ public class ConfigManager {
         return base.resolve(appName);
     }
 
-    private void loadConfigFile(){
-        //TODO
+    private void loadConfigFile() throws  IOException{
+        Properties properties = new Properties();
+
+        try (InputStream in = Files.newInputStream(configFilePath)) {
+            properties.load(in);
+
+            Path xml_path_load = Path.of(properties.getProperty("Quick_Check_XML_PATH"));
+            int windowTimeoutSeconds_load = Integer.parseInt(properties.getProperty("emoji_window_timeout_second"));
+            int windowWidth_load = Integer.parseInt(properties.getProperty("window_width"));
+            int windowHeight_load = Integer.parseInt(properties.getProperty("window_height"));
+
+            if (!Files.isRegularFile(xml_path)) {
+                throw new NoSuchFileException(xml_path.toString());
+            }
+
+            //Register the values
+            xml_path = xml_path_load;
+            windowTimeoutSeconds = windowTimeoutSeconds_load;
+            windowWidth = windowWidth_load;
+            windowHeight = windowHeight_load;
+        }catch (IOException | NumberFormatException | InvalidPathException | NullPointerException e) {
+            try {
+                Files.deleteIfExists(configFilePath);
+            } catch (IOException deleteEx) {
+                deleteEx.printStackTrace();
+            }
+            makeConfigFile(); // recreate with fresh defaults
+            throw new RuntimeException("Config file was invalid and has been reset to defaults", e);
+        }
+
+        System.out.println("Loaded existing config from: " + configFilePath);
+
     }
 
     private void makeConfigFile() throws IOException {
         Files.createDirectories(configFilePath);
 
         //New properties object, to directly receive the configuration parameters
-        Properties props = new Properties();
+        Properties propertiess = new Properties();
 
-        props.setProperty("Quick_Check_XML_PATH", xml_path);
-        props.setProperty("emoji_window_timeout_second", String.valueOf(windowTimeoutSeconds));
+        propertiess.setProperty("Quick_Check_XML_PATH", String.valueOf(xml_path));
+        propertiess.setProperty("emoji_window_timeout_second", String.valueOf(windowTimeoutSeconds));
+        propertiess.setProperty("window_width",String.valueOf(windowWidth));
+        propertiess.setProperty("window_height",String.valueOf(windowHeight));
 
+        try (OutputStream out = Files.newOutputStream(configFilePath)) {
+            propertiess.store(out, "Quick Check Reactor - Default Configuration");
+        }
+        System.out.println("Created default config at: " + configFilePath);
     }
 
-    public String getXml_path() {
+    public Path getXml_path() {
         return xml_path;
     }
 
