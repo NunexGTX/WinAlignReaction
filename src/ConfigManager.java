@@ -14,7 +14,7 @@ public class ConfigManager {
     private int windowY = 0;
 
     //Config File
-    private final static String ConfigFileName = "QuickCheckReactor_config";
+    private final static String ConfigFileName = "QuickCheckReactorConfig.properties";
     private Path configFilePath;
 
     public ConfigManager(){
@@ -98,7 +98,7 @@ public class ConfigManager {
     }
 
     private void makeConfigFile() throws IOException {
-        Files.createDirectories(configFilePath);
+        Files.createDirectories(configFilePath.getParent());
 
         //New properties object, to directly receive the configuration parameters
         Properties propertiess = new Properties();

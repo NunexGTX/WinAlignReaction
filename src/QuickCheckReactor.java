@@ -17,7 +17,7 @@ public class QuickCheckReactor {
     //Child Class Instances
     private static ConfigManager configManager = new ConfigManager();
     private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
-    private static EmojiconDrawer emojiconDrawer = new EmojiconDrawer(configManager);
+    private static EmojiDrawer emojiDrawer = new EmojiDrawer(configManager);
     private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
 
     //Register and show the program in system tray, along with its right click options
@@ -52,16 +52,16 @@ public class QuickCheckReactor {
         });
         trayPopupMenu.add(close);
 
-        /*setting tray icon
+        //setting tray icon
         //TODO: System Tray logo
-        Image image = Toolkit.getDefaultToolkit().getImage("src/img.jpg");
+        Image image = Toolkit.getDefaultToolkit().getImage("src/assets/emojis/grinning.png");
         TrayIcon trayIcon = new TrayIcon(image, "WinAlign QuickCheck Reaction", trayPopupMenu);
         trayIcon.setImageAutoSize(true);
         try{
             systemTray.add(trayIcon);
         }catch(AWTException awtException){
             awtException.printStackTrace();
-        }*/
+        }
     }
 
     public static void main(String[] args) {
@@ -70,9 +70,9 @@ public class QuickCheckReactor {
         while (true){
             try {
                 if(quickCheckResultWatcher.watchXML()){ //Wait for XML to change (blocks and waits)
-                    emojiconDrawer.DrawQuickCheckResult(quickCheckResultWatcher.quickCheckResultVal());
+                    emojiDrawer.DrawQuickCheckResult(quickCheckResultWatcher.quickCheckResultVal());
                     TimeUnit.SECONDS.sleep(configManager.getWindowTimeoutSeconds()); //Wait for window timeout and halt the loop
-                    emojiconDrawer.DestroyResultWindow(); //Destroy the emoji window and continue the loop
+                    emojiDrawer.DestroyResultWindow(); //Destroy the emoji window and continue the loop
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
