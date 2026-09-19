@@ -39,7 +39,7 @@ public class EmojiDrawer {
 
     public void DrawQuickCheckResult(TestResultValue testResultValue){
         //Set the frame
-        frame = new JFrame("Quick Check - Smiley Result");
+        frame = new JFrame("Quick Check Reactor - Smiley Result");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(config.getWindowWidth(),config.getWindowHeight());
         frame.setLocation(config.getWindowX(),config.getWindowY());

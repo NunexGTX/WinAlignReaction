@@ -18,7 +18,7 @@ public class QuickCheckReactor {
     private static ConfigManager configManager = new ConfigManager();
     private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
     private static EmojiDrawer emojiDrawer = new EmojiDrawer(configManager);
-    private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
+    //private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
 
     //Register and show the program in system tray, along with its right click options
     private static void createTray(){
@@ -38,7 +38,9 @@ public class QuickCheckReactor {
         action.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Action Clicked");
+                if (!SettingsMenu.settingsOpen){
+                    SettingsMenu settingsMenu = new SettingsMenu(configManager);
+                }
             }
         });
         trayPopupMenu.add(action);
