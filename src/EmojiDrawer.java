@@ -23,9 +23,9 @@ public class EmojiDrawer {
     }
 
     private void storeEmojis(){
-        resultToEmojimage.put(TestResultValue.PASS,loadImage("src/assets/emojis/grinning.png"));
-        resultToEmojimage.put(TestResultValue.WARNING,loadImage("src/assets/emojis/face_with_diagonal_mouth.png"));
-        resultToEmojimage.put(TestResultValue.FAIL,loadImage("src/assets/emojis/white_frowning_face.png"));
+        resultToEmojimage.put(TestResultValue.PASS,loadImage("assets/emojis/grinning.png"));
+        resultToEmojimage.put(TestResultValue.WARNING,loadImage("assets/emojis/face_with_diagonal_mouth.png"));
+        resultToEmojimage.put(TestResultValue.FAIL,loadImage("assets/emojis/white_frowning_face.png"));
     }
 
     private BufferedImage loadImage(String imagePath){

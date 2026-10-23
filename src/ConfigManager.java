@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class ConfigManager {
     //Configuration Values
-    private Path xml_path = Path.of(System.getProperty("user.home"), "xmldobom.xml"); //TODO: FIX PATH
+    private Path xml_dir = Path.of(System.getProperty("user.home"));
     private long windowTimeoutSeconds = 5;
     private int windowWidth = 512;
     private int windowHeight = 512;
@@ -76,7 +76,7 @@ public class ConfigManager {
             int windowY_load = Integer.parseInt(properties.getProperty("window_y"));
 
             //Register the values
-            xml_path = xml_path_load;
+            xml_dir = xml_path_load;
             windowTimeoutSeconds = windowTimeoutSeconds_load;
             windowWidth = windowWidth_load;
             windowHeight = windowHeight_load;
@@ -103,7 +103,7 @@ public class ConfigManager {
         //New properties object, to directly receive the configuration parameters
         Properties propertiess = new Properties();
 
-        propertiess.setProperty("Quick_Check_XML_PATH", String.valueOf(xml_path));
+        propertiess.setProperty("Quick_Check_XML_PATH", String.valueOf(xml_dir));
         propertiess.setProperty("emoji_window_timeout_second", String.valueOf(windowTimeoutSeconds));
         propertiess.setProperty("window_width",String.valueOf(windowWidth));
         propertiess.setProperty("window_height",String.valueOf(windowHeight));
@@ -116,8 +116,8 @@ public class ConfigManager {
         System.out.println("Created default config at: " + configFilePath);
     }
 
-    public Path getXml_path() {
-        return xml_path;
+    public Path getXml_dir() {
+        return xml_dir;
     }
 
     public long getWindowTimeoutSeconds() {

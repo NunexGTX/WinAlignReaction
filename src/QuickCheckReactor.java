@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JOptionPane;
 
 /*
 This is the main class of the WinAlignReaction program. It's gonna run as a system tray program and it will only draw a window with the result emoji to be destroyed right after
@@ -16,7 +15,7 @@ public class QuickCheckReactor {
 
     //Child Class Instances
     private static ConfigManager configManager = new ConfigManager();
-    private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_path());
+    private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_dir());
     private static EmojiDrawer emojiDrawer = new EmojiDrawer(configManager);
     //private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
 

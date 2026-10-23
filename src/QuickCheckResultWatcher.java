@@ -11,19 +11,19 @@ import java.util.Arrays;
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class QuickCheckResultWatcher {
-    private Path result_xml_path;
+    private Path result_xml_dir;
 
     private WatchService XMLWatcher;
     public static final int READ_ERROR = -1;
     public static final int[] validTestValues = new int[]{0,1,2,3};  //Undefined, pass, warning, fail
     public static final String MEASObject = "WHEEL_ALIGNMENT";
 
-    public QuickCheckResultWatcher(Path result_xml_path){
-        this.result_xml_path = result_xml_path;
+    public QuickCheckResultWatcher(Path result_xml_dir){
+        this.result_xml_dir = result_xml_dir;
 
         try {
             XMLWatcher = FileSystems.getDefault().newWatchService();
-            this.result_xml_path.getParent().register(XMLWatcher, ENTRY_CREATE, ENTRY_MODIFY);
+            this.result_xml_dir.register(XMLWatcher, ENTRY_CREATE, ENTRY_MODIFY);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class QuickCheckResultWatcher {
             WatchEvent.Kind<?> kind = event.kind();
 
             Path changed = (Path) event.context();   // relative to the watched dir
-            if (changed.equals(result_xml_path.getFileName())) {
+            if (changed.equals(result_xml_dir.getFileName())) {
                 return true;
             }
         }
@@ -50,7 +50,7 @@ public class QuickCheckResultWatcher {
 
     public TestResultValue quickCheckResultVal(){
         try{
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(result_xml_path.toFile());
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(result_xml_dir.toFile());
             String result = XPathFactory.newInstance().newXPath().evaluate("//MEAS[@OBJECT='"+MEASObject+"']/VALUE/@RESULT", doc);
             int testResult = Integer.parseInt(result.trim());
 
@@ -61,7 +61,7 @@ public class QuickCheckResultWatcher {
             }
         }catch (IOException | SAXException e) {
             // File missing/unreadable, or XML malformed (e.g. caught mid-write)
-            System.err.println("Could not read " + result_xml_path + ": " + e.getMessage());
+            System.err.println("Could not read " + result_xml_dir + ": " + e.getMessage());
         } catch (ParserConfigurationException | XPathExpressionException e) {
             // Setup or XPath problem, which points to a bug rather than bad data
             System.err.println("XML processing error: " + e.getMessage());
