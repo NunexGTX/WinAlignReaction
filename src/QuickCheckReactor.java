@@ -1,3 +1,5 @@
+import Interface.MonitorProbe;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
@@ -65,8 +67,14 @@ public class QuickCheckReactor {
         }
     }
 
+    public static void resetLoop(){
+        //Skips to the next loops, by resetting the watchXML
+        quickCheckResultWatcher.watchRelease();
+    }
+
     public static void main(String[] args) {
         createTray();
+        //new SettingsMenu(configManager);
 
         while (true){
             try {

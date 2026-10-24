@@ -1,8 +1,7 @@
-import UI.ImagePanel;
+import Interface.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +10,8 @@ import java.util.HashMap;
 
 public class EmojiDrawer {
     private ConfigManager config;
+
+    private boolean borderless = true;
 
     private JFrame frame;
 
@@ -41,6 +42,9 @@ public class EmojiDrawer {
         //Set the frame
         frame = new JFrame("Quick Check Reactor - Smiley Result");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        frame.setUndecorated(borderless); //Makes the window borderless
+
         frame.setSize(config.getWindowWidth(),config.getWindowHeight());
         frame.setLocation(config.getWindowX(),config.getWindowY());
 
