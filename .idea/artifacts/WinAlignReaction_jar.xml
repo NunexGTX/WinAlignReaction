@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WinAlignReaction:jar">
+    <output-path>$PROJECT_DIR$/jar</output-path>
+    <root id="archive" name="WinAlignReaction.jar">
+      <element id="module-output" name="WinAlignReaction" />
+    </root>
+  </artifact>
+</component>

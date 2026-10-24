@@ -1,0 +1,1 @@
+jpackage --type app-image --name WinAlignReaction --input jar --main-jar WinAlignReaction.jar --main-class QuickCheckReactor

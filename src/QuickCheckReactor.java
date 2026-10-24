@@ -57,7 +57,7 @@ public class QuickCheckReactor {
 
         //setting tray icon
         //TODO: System Tray logo
-        Image image = Toolkit.getDefaultToolkit().getImage("src/assets/emojis/grinning.png");
+        Image image = Toolkit.getDefaultToolkit().getImage("assets/emojis/grinning.png");
         TrayIcon trayIcon = new TrayIcon(image, "WinAlign QuickCheck Reaction", trayPopupMenu);
         trayIcon.setImageAutoSize(true);
         try{
