@@ -12,6 +12,7 @@ public class ConfigManager {
     private int windowHeight = 512;
     private int windowX = 0;
     private int windowY = 0;
+    private MEASObjects measObject = MEASObjects.TIRE_CHECK;
 
     //Config File
     private final static String ConfigFileName = "QuickCheckReactorConfig.properties";
@@ -74,6 +75,7 @@ public class ConfigManager {
             int windowHeight_load = Integer.parseInt(properties.getProperty("window_height"));
             int windowX_load = Integer.parseInt(properties.getProperty("window_x"));
             int windowY_load = Integer.parseInt(properties.getProperty("window_y"));
+            MEASObjects measObject_load = MEASObjects.valueOf(properties.getProperty("MEASObjectName"));
 
             //Register the values
             xml_dir = xml_path_load;
@@ -82,6 +84,7 @@ public class ConfigManager {
             windowHeight = windowHeight_load;
             windowX = windowX_load;
             windowY = windowY_load;
+            measObject = measObject_load;
         }catch (IOException | NumberFormatException | InvalidPathException | NullPointerException e) {
             try {
                 System.out.println("The configuration file contains invalid values or has been corrupted. Resetting to default values...");
@@ -90,7 +93,7 @@ public class ConfigManager {
                 deleteEx.printStackTrace();
             }
             makeConfigFile(); // recreate with fresh defaults
-            throw new RuntimeException("Config file was invalid and has been reset to defaults", e);
+            System.out.println("WARNING: Config file was invalid and has been reset to defaults");
         }
 
         System.out.println("Loaded existing config from: " + configFilePath);
@@ -109,6 +112,7 @@ public class ConfigManager {
         propertiess.setProperty("window_height",String.valueOf(windowHeight));
         propertiess.setProperty("window_x", String.valueOf(windowX));
         propertiess.setProperty("window_y",String.valueOf(windowY));
+        propertiess.setProperty("MEASObjectName",measObject.name());
 
         try (OutputStream out = Files.newOutputStream(configFilePath)) {
             propertiess.store(out, "Quick Check Reactor - Default Configuration");
@@ -138,5 +142,9 @@ public class ConfigManager {
 
     public int getWindowY() {
         return windowY;
+    }
+
+    public MEASObjects getMeasObject(){
+        return measObject;
     }
 }

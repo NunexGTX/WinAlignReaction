@@ -15,7 +15,7 @@ public class QuickCheckReactor {
 
     //Child Class Instances
     private static ConfigManager configManager = new ConfigManager();
-    private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager.getXml_dir());
+    private static QuickCheckResultWatcher quickCheckResultWatcher = new QuickCheckResultWatcher(configManager);
     private static EmojiDrawer emojiDrawer = new EmojiDrawer(configManager);
     //private static SettingsMenu settingsMenu = new SettingsMenu(configManager);
 
