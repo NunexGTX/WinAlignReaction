@@ -2,6 +2,7 @@ import Interface.ImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,23 +16,12 @@ public class EmojiDrawer {
 
     private JFrame frame;
 
-    //Emoji and Emoticon hashmaps
-    HashMap<TestResultValue,BufferedImage> resultToEmojimage = new HashMap<>();
-
     public EmojiDrawer(ConfigManager config){
         this.config = config;
-        storeEmojis();
     }
 
-    private void storeEmojis(){
-        resultToEmojimage.put(TestResultValue.UNDEFINED,loadImage("assets/emojis/persevering_face_emoji.png"));
-        resultToEmojimage.put(TestResultValue.PASS,loadImage("assets/emojis/grinning.png"));
-        resultToEmojimage.put(TestResultValue.WARNING,loadImage("assets/emojis/face_with_diagonal_mouth.png"));
-        resultToEmojimage.put(TestResultValue.FAIL,loadImage("assets/emojis/white_frowning_face.png"));
-    }
-
-    private BufferedImage loadImage(String imagePath){
-        try (InputStream in = getClass().getResourceAsStream(imagePath)) {
+    public static BufferedImage loadImage(String imagePath){
+        try (InputStream in = QuickCheckReactor.class.getResourceAsStream(imagePath)) { //at main class
             if (in == null) throw new IllegalStateException("Missing image resource: " + imagePath);
             return ImageIO.read(in);
         } catch (IOException e) {
@@ -46,10 +36,12 @@ public class EmojiDrawer {
 
         frame.setUndecorated(borderless); //Makes the window borderless
 
+        frame.getContentPane().setBackground(testResultValue.getPanelbackground());
+
         frame.setSize(config.getWindowWidth(),config.getWindowHeight());
         frame.setLocation(config.getWindowX(),config.getWindowY());
 
-        frame.setContentPane(new ImagePanel(resultToEmojimage.get(testResultValue)));
+        frame.setContentPane(new ImagePanel(testResultValue.getEmojimage()));
 
         //Only set visibility when fully drawn
         frame.setVisible(true);
