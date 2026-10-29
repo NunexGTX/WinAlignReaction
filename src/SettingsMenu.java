@@ -22,6 +22,13 @@ public class SettingsMenu {
         settingsFrame = new JFrame("Quick Check Reactor - Settings");
         settingsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Do not close the app when the window closes
 
+        settingsFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                settingsOpen = false;
+            }
+        });
+
         //Set Panel
         JPanel panel = new JPanel(new GridLayout(3, 2, 8, 8));   // gaps between cells
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));

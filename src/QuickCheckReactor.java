@@ -1,7 +1,10 @@
 import Interface.MonitorProbe;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -40,7 +43,7 @@ public class QuickCheckReactor {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!SettingsMenu.settingsOpen){
-                    SettingsMenu settingsMenu = new SettingsMenu(configManager);
+                   new SettingsMenu(configManager);
                 }
             }
         });
@@ -57,7 +60,12 @@ public class QuickCheckReactor {
 
         //setting tray icon
         //TODO: System Tray logo
-        Image image = Toolkit.getDefaultToolkit().getImage("assets/emojis/grinning.png");
+        Image image = null;
+        try {
+            image = ImageIO.read(Objects.requireNonNull(QuickCheckReactor.class.getResourceAsStream("/assets/emojis/persevering_face_emoji.png")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         TrayIcon trayIcon = new TrayIcon(image, "WinAlign QuickCheck Reaction", trayPopupMenu);
         trayIcon.setImageAutoSize(true);
         try{

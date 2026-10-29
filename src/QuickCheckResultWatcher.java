@@ -46,7 +46,7 @@ public class QuickCheckResultWatcher {
 
             key.reset(); // Re-arm key
 
-            if (new_file_created.endsWith(".xml")) {
+            if (new_file_created.toLowerCase().endsWith(".xml")) {
                 //Only accept valid .xml files
                 intercepted_xml = Path.of(configManager.getXml_dir() + "/" + new_file_created);
                 System.out.println("New xml detected at: "+intercepted_xml);
