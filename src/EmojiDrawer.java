@@ -24,6 +24,7 @@ public class EmojiDrawer {
     }
 
     private void storeEmojis(){
+        resultToEmojimage.put(TestResultValue.UNDEFINED,loadImage("assets/emojis/persevering_face_emoji.png"));
         resultToEmojimage.put(TestResultValue.PASS,loadImage("assets/emojis/grinning.png"));
         resultToEmojimage.put(TestResultValue.WARNING,loadImage("assets/emojis/face_with_diagonal_mouth.png"));
         resultToEmojimage.put(TestResultValue.FAIL,loadImage("assets/emojis/white_frowning_face.png"));
