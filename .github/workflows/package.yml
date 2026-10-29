@@ -1,0 +1,45 @@
+name: Package
+
+on:
+  workflow_dispatch: # adds a "Run workflow" button on GitHub
+
+jobs:
+  package:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build the jar
+        run: |
+          javac -d out $(find src -name "*.java")
+          mkdir staging
+          jar --create --file staging/app.jar --main-class QuickCheckReactor -C out . -C src assets
+        shell: bash
+
+      - name: Run jpackage
+        run: |
+          jpackage \
+            --input staging \
+            --main-jar app.jar \
+            --main-class QuickCheckReactor \
+            --name WinAlignReaction \
+            --type app-image \
+            --dest dist
+        shell: bash
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinAlignReaction-${{ matrix.os }}
+          path: dist
