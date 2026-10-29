@@ -3,7 +3,11 @@ import Interface.MonitorProbe;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -80,9 +84,25 @@ public class QuickCheckReactor {
         quickCheckResultWatcher.watchRelease();
     }
 
+    private static void process_args(String[] args){
+        if (Arrays.asList(args).contains("log")){
+            try {
+                Path logFile = Path.of(ConfigManager.getAppDataDir(AppName)+"/log.txt");
+                PrintStream logger = new PrintStream(new FileOutputStream(logFile.toFile(), true),true,StandardCharsets.UTF_8);
+
+                System.setOut(logger);
+                System.setErr(logger);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         createTray();
         //new SettingsMenu(configManager);
+
+        process_args(args);
 
         while (true){
             try {
