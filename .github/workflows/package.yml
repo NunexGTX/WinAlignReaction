@@ -1,4 +1,4 @@
-name: Package
+name: WinAlignReaction Compile
 
 on:
   workflow_dispatch: # adds a "Run workflow" button on GitHub
