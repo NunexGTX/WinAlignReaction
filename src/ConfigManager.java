@@ -10,7 +10,7 @@ import java.util.Properties;
 public class ConfigManager {
     //Configuration Values
     private Path xml_dir = Path.of(System.getProperty("user.home"));
-    private long windowTimeoutSeconds = 5;
+    private int windowTimeoutSeconds = 5;
     private int windowWidth = 512;
     private int windowHeight = 512;
     private int windowX = 0;
@@ -152,7 +152,7 @@ public class ConfigManager {
         return xml_dir;
     }
 
-    public long getWindowTimeoutSeconds() {
+    public int getWindowTimeoutSeconds() {
         return windowTimeoutSeconds;
     }
 
@@ -218,6 +218,16 @@ public class ConfigManager {
         try {
             update_config_file();
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setWindowTimeoutSeconds(int windowTimeoutSeconds){
+        this.windowTimeoutSeconds = windowTimeoutSeconds;
+        ProgramProperties.setProperty("emoji_window_timeout_second", String.valueOf(windowTimeoutSeconds));
+        try {
+            update_config_file();
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

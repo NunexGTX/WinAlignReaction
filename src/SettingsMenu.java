@@ -30,7 +30,7 @@ public class SettingsMenu {
         });
 
         //Set Panel
-        JPanel panel = new JPanel(new GridLayout(3, 2, 8, 8));   // gaps between cells
+        JPanel panel = new JPanel(new GridLayout(4, 2, 8, 8));   // gaps between cells
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 
         // File picker row
@@ -65,6 +65,13 @@ public class SettingsMenu {
 
         panel.add(new JLabel("Output Monitor:"));
         panel.add(MonitorsList);
+
+        //Emoji Window Tiemout
+        JSpinner windowTimeoutSpinner = new JSpinner(new SpinnerNumberModel(config.getWindowTimeoutSeconds(), 1, 500, 1)); // value, min, max, step
+        windowTimeoutSpinner.addChangeListener(e -> config.setWindowTimeoutSeconds((Integer) windowTimeoutSpinner.getValue()));
+
+        panel.add(new JLabel("Emoji Window Timeout (seconds):"));
+        panel.add(windowTimeoutSpinner);
 
         //MEASObject Dropwdown Selector
         JComboBox<MEASObjects> MEASObjectsDropwdown = new JComboBox<>(MEASObjects.values());
