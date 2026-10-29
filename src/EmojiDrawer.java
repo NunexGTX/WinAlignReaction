@@ -32,16 +32,18 @@ public class EmojiDrawer {
     public void DrawQuickCheckResult(TestResultValue testResultValue){
         //Set the frame
         frame = new JFrame("Quick Check Reactor - Smiley Result");
+
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         frame.setUndecorated(borderless); //Makes the window borderless
 
-        frame.getContentPane().setBackground(testResultValue.getPanelbackground());
 
         frame.setSize(config.getWindowWidth(),config.getWindowHeight());
         frame.setLocation(config.getWindowX(),config.getWindowY());
 
-        frame.setContentPane(new ImagePanel(testResultValue.getEmojimage()));
+        ImagePanel panel = new ImagePanel(testResultValue.getEmojimage());
+        panel.setBackground(testResultValue.getPanelbackground());
+        frame.setContentPane(panel);
 
         //Only set visibility when fully drawn
         frame.setVisible(true);

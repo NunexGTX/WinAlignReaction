@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum TestResultValue {
     ERROR(-1, EmojiDrawer.loadImage("assets/emojis/persevering_face_emoji.png"),Color.GRAY),
-    UNDEFINED(0, EmojiDrawer.loadImage("assets/emojis/white_frowning_face.png"),Color.GRAY),
+    UNDEFINED(0, EmojiDrawer.loadImage("assets/emojis/persevering_face_emoji.png"),Color.GRAY),
     PASS(1, EmojiDrawer.loadImage("assets/emojis/grinning.png"),Color.GREEN),
     WARNING(2, EmojiDrawer.loadImage("assets/emojis/face_with_diagonal_mouth.png"),Color.yellow),
     FAIL(3, EmojiDrawer.loadImage("assets/emojis/white_frowning_face.png"),Color.RED);
